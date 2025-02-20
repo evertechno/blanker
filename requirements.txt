@@ -1,1 +1,8 @@
 streamlit
+requests
+scikit-learn
+google-generativeai
+matplotlib
+wordcloud
+nltk
+langid
