@@ -55,6 +55,7 @@ else:
 def transcribe_audio(file, api_url):
     try:
         # Read the file as binary
+        file.seek(0)  # Ensure we're at the start of the file
         data = file.read()
         response = requests.post(api_url, headers=HEADERS, data=data)
         if response.status_code == 200:
@@ -79,6 +80,7 @@ def extract_keywords(text):
 
 # Function to simulate speaker detection (based on pauses in speech, for now, this is a placeholder)
 def detect_speakers(audio_file):
+    audio_file.seek(0)  # Ensure we're at the start of the file
     audio_data = audio_file.read()
     duration = len(audio_data) / (44100 * 2)  # Assuming 44.1kHz sample rate and 16-bit samples
     segments = int(duration // 2)  # Simulate speaker detection by splitting into 2-second intervals
@@ -97,6 +99,7 @@ def calculate_speech_rate(text, duration_seconds):
 
 # Function to calculate pause duration (simulated)
 def calculate_pause_duration(audio_file):
+    audio_file.seek(0)  # Ensure we're at the start of the file
     audio_data = audio_file.read()
     duration = len(audio_data) / (44100 * 2)  # Assuming 44.1kHz sample rate and 16-bit samples
     pause_duration = duration * 0.1  # Simulate 10% of the duration as pauses
@@ -144,6 +147,7 @@ if uploaded_file is not None:
         result = transcribe_audio(uploaded_file, api_url)
         if "text" in result:
             transcription_text = result["text"]
+            st.write(f"Successfully transcribed using model: {model_name}")
             break
         elif "error" in result:
             st.error(f"Error with model {model_name}: {result['error']}")
